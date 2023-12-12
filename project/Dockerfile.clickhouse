@@ -1,0 +1,4 @@
+FROM yandex/clickhouse-server:21.8
+
+# Add custom configurations if needed
+COPY clickhouse-config.xml /etc/clickhouse-server/config.d/

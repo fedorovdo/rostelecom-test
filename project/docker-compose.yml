@@ -1,0 +1,25 @@
+version: '3'
+services:
+  clickhouse:
+    build:
+      context: .
+      dockerfile: Dockerfile.clickhouse
+    ports:
+      - "8123:8123"  # ClickHouse HTTP interface
+
+  account_search_service:
+    build: .
+    depends_on:
+      - clickhouse
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./account_search_service/successful_search_results.txt:/app/successful_search_results.txt
+    links:
+      - redis
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
